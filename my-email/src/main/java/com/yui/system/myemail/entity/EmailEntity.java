@@ -1,6 +1,14 @@
 package com.yui.system.myemail.entity;
 
+import lombok.Getter;
+import lombok.Setter;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
+import java.util.Set;
 
 /**
  * 邮件实体类
@@ -8,111 +16,59 @@ import java.util.Date;
  * @author XuZhuohao
  * @date 2018/10/16
  */
+@Setter
+@Getter
+@EntityListeners(AuditingEntityListener.class)
+@Entity(name = "email")
 public class EmailEntity {
     /**
      * 主键id
      */
-    private Integer id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     /**
      * 发件人
      */
-    private String from;
+    @Column(nullable = false, length = 100)
+    private String fromUser;
     /**
      * 收件人
      */
-    private String to;
+    @Column(nullable = false, length = 100)
+    private String toUser;
     /**
      * 主题
      */
+    @Column(nullable = false)
     private String subject;
     /**
      * 内容
      */
+    @Column(nullable = false, columnDefinition = "text")
     private String content;
     /**
-     * 插入图片，[srcId:patch,srcId:patch....]
+     * 插入图片
      */
-    private String images;
+    @OneToMany(fetch = FetchType.EAGER)
+    @JoinColumn(name = "email_id")
+    private Set<ImageEntity> images;
     /**
-     * 附件，[fileName:filePatch,...]
+     * TODO: FetchType.LAZY会有问题，请研究 org.hibernate.LazyInitializationException: failed to lazily initialize a col
+     *
+     * TODO:使用list会出现 cannot simultaneously fetch multiple bags
+     * 附件
      */
-    private String files;
+    @OneToMany(fetch = FetchType.EAGER)
+    @JoinColumn(name = "email_id")
+    private Set<FileEntity> files;
     /**
      * 回调地址
      */
     private String callbackDomain;
 
+    @CreatedDate
+    @Temporal(TemporalType.TIMESTAMP)
     private Date createTime;
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getFrom() {
-        return from;
-    }
-
-    public void setFrom(String from) {
-        this.from = from;
-    }
-
-    public String getTo() {
-        return to;
-    }
-
-    public void setTo(String to) {
-        this.to = to;
-    }
-
-    public String getSubject() {
-        return subject;
-    }
-
-    public void setSubject(String subject) {
-        this.subject = subject;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public String getImages() {
-        return images;
-    }
-
-    public void setImages(String images) {
-        this.images = images;
-    }
-
-    public String getFiles() {
-        return files;
-    }
-
-    public void setFiles(String files) {
-        this.files = files;
-    }
-
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public String getCallbackDomain() {
-        return callbackDomain;
-    }
-
-    public void setCallbackDomain(String callbackDomain) {
-        this.callbackDomain = callbackDomain;
-    }
 }
