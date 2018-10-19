@@ -7,7 +7,6 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -71,4 +70,8 @@ public class EmailEntity {
     @Temporal(TemporalType.TIMESTAMP)
     private Date createTime;
 
+    /**
+     * 是否发送成功
+     */
+    private boolean isSend;
 }

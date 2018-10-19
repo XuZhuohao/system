@@ -81,7 +81,7 @@ public class DbTest {
         imageRepository.saveAll(images);
         fileRepository.saveAll(files);
         emailRepository.save(emailEntity);
-        emailService.sendEmail(emailEntity);
+        //emailService.sendEmail(emailEntity);
     }
 
     @Test
