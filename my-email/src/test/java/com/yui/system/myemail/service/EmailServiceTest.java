@@ -1,6 +1,5 @@
-package com.yui.system.myemail.com.yui.system.myemail.service;
+package com.yui.system.myemail.service;
 
-import com.yui.system.myemail.service.EmailService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

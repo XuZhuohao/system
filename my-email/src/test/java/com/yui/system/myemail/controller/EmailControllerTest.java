@@ -1,44 +1,59 @@
-package com.yui.system.myemail.com.yui.system.myemail.service;
+package com.yui.system.myemail.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.yui.system.myemail.entity.EmailEntity;
 import com.yui.system.myemail.entity.FileEntity;
 import com.yui.system.myemail.entity.ImageEntity;
-import com.yui.system.myemail.repository.EmailRepository;
-import com.yui.system.myemail.repository.FileRepository;
-import com.yui.system.myemail.repository.ImageRepository;
-import com.yui.system.myemail.service.EmailService;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
- * 数据库连接测试
+ * EmailController测试
  *
  * @author XuZhuohao
- * @date 2018/10/19
+ * @date 2018/10/23
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class DbTest {
-    @Autowired
-    private EmailRepository emailRepository;
-    @Autowired
-    private FileRepository fileRepository;
-    @Autowired
-    private ImageRepository imageRepository;
+public class EmailControllerTest {
     @Value("${spring.mail.username}")
     private String from;
     @Autowired
-    EmailService emailService;
+    private WebApplicationContext wac;
+
+    private MockMvc mockMvc;
+
+    @Before
+    public void setup() {
+        mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
+    }
 
     @Test
-    public void test1(){
+    public void whenSendSuccess() throws Exception {
+        String param = JSON.toJSONString(this.getEmailEntity());
+        System.out.println(param);
+        String result = mockMvc.perform(MockMvcRequestBuilders.post("/email/send")
+                .content(param)
+                .contentType(MediaType.APPLICATION_JSON_UTF8))
+                //.andExpect(MockMvcResultMatchers.status().isOk())
+                .andReturn().getResponse().getContentAsString();
+        System.out.println(result);
+    }
+
+    private EmailEntity getEmailEntity(){
         String imageCid01 = "t1";
         String imageCid02 = "t2";
         String content = "<html><body><h1>图片发送</h1><p></p><img src='cid:" + imageCid01 + "'></img>" +
@@ -77,20 +92,6 @@ public class DbTest {
         files.add(fileEntity01);
         files.add(fileEntity02);
         emailEntity.setFiles(files);
-
-        imageRepository.saveAll(images);
-        fileRepository.saveAll(files);
-        emailRepository.save(emailEntity);
-        //emailService.sendEmail(emailEntity);
-    }
-
-    @Test
-    public void testSendEmailFromDB(){
-        Optional<EmailEntity> emailEntity = emailRepository.findById(1L);
-        if (!emailEntity.isPresent()){
-            throw new RuntimeException("exception of find by id");
-        }
-        System.out.println(JSON.toJSONString(emailEntity));
-        emailService.sendEmail(emailEntity.get());
+        return emailEntity;
     }
 }
