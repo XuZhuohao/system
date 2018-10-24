@@ -1,0 +1,24 @@
+server:
+  port: 8081
+spring:
+  application:
+    name: my-email
+  mail:
+    host: smtp.qq.com
+    password: a
+    username: 786725551@qq.com
+    default-encoding: utf-8
+  datasource:
+    # 腾讯云接口开放
+    url: jdbc:mysql://xuzhuohao:3306/my-email?useSSL=false&useUnicode=true&characterEncoding=utf8&autoReconnect=true
+    username: hjl
+    password: a
+    driver-class-name: com.mysql.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create
+    #  create 启动时删数据库中的表，然后创建，退出时不删除数据表
+    #  create-drop 启动时删数据库中的表，然后创建，退出时删除数据表 如果表不存在报错
+    #  update 如果启动时表格式不一致则更新表，原有数据保留
+    #  validate 项目启动表结构进行校验 如果不一致则报错
+    show-sql: true
