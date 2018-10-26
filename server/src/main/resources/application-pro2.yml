@@ -1,0 +1,13 @@
+server:
+  port: 8762 # 项目启动端口
+
+eureka:
+  instance:
+    hostname: system-server-2 # 设置当前实例的主机名称
+  client:
+    registerWithEureka: false # 是否启动服务注册
+    fetchRegistry: false # 是否检索服务
+    # 指定服务注册中心地址，类型为 HashMap，并设置有一组默认值，默认的Key为 defaultZone；默认的Value为 http://localhost:8761/eureka ，如果服务注册中心为高可用集群时，多个注册中心地址以逗号分隔。
+    # 如果服务注册中心加入了安全验证，这里配置的地址格式为： http://<username>:<password>@localhost:8761/eureka 其中 <username> 为安全校验的用户名；<password> 为该用户的密码
+    serviceUrl:
+      defaultZone: http://system-server-1:8761/eureka/,http://system-server-2:8762/eureka/
