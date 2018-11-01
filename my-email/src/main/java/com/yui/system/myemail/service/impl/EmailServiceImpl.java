@@ -42,13 +42,17 @@ public class EmailServiceImpl implements EmailService {
             helper.setText(emailEntity.getContent(), true);
             // 插入图片
             Set<ImageEntity> images = emailEntity.getImages();
-            for (ImageEntity image : images) {
-                helper.addInline(image.getCid(), new FileSystemResource(new File(image.getSrc())));
+            if (images != null) {
+                for (ImageEntity image : images) {
+                    helper.addInline(image.getCid(), new FileSystemResource(new File(image.getSrc())));
+                }
             }
             // 插入附件
             Set<FileEntity> files = emailEntity.getFiles();
-            for (FileEntity file : files) {
-                helper.addAttachment(file.getFileName(), new FileSystemResource(new File(file.getPath())));
+            if (files != null) {
+                for (FileEntity file : files) {
+                    helper.addAttachment(file.getFileName(), new FileSystemResource(new File(file.getPath())));
+                }
             }
             // 发送邮件
             mailSender.send(message);
