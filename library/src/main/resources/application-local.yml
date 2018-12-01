@@ -1,0 +1,22 @@
+server:
+  port: 8085
+spring:
+  application:
+    name: library
+  datasource:
+    url: jdbc:mysql://127.0.0.1/library?useSSL=false&useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=GMT%2B8
+    username: root
+    password: a
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+#eureka:
+#  client:
+#    serviceUrl:
+#      defaultZone: http://system-server-1:8761/eureka/
+
+book:
+  get:
+    url: https://api.douban.com/v2/book/isbn/
