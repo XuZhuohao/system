@@ -33,5 +33,5 @@ public class BaseEntity {
     private Date updateTime;
 
     @Column(columnDefinition = "tinyint default 0")
-    private boolean isDelete;
+    private boolean isDelete = false;
 }

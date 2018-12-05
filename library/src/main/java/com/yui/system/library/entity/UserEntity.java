@@ -35,8 +35,22 @@ public class UserEntity extends BaseEntity {
     @Column(length = 32, nullable = false)
     private String passWord;
 
-//    @OneToMany(fetch = FetchType.LAZY, mappedBy = "userEntity")
+
+    /**
+     * 懒加载数据的使用，需要保证主查询session(数据库连接会话)的生命周期没有结束，
+     * 在使用方法上添加注解@Transactional
+     * OneToMany(fetch = FetchType.LAZY, mappedBy = "userEntity")
+     */
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private List<BookEntity> books;
+
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "captain")
+    private List<TeamEntity> myTeams;
+
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private List<TeamToUserEntity> innerTeams;
+
 }
